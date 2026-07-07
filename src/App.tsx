@@ -26,7 +26,7 @@ function App() {
     perPage
   };
 
-  const books = useBooks(apiParams);
+  const rgwgwe = useBooks(apiParams);
   //const { data: categories } = useCategories();
 
   // const counts: Record<View, number | undefined> = {
@@ -34,7 +34,7 @@ function App() {
   //   categories: 0,
   // };
 
-  console.log(books)
+  console.log("books data : ", rgwgwe)
 
   return (
     <>

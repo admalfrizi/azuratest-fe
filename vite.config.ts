@@ -10,4 +10,7 @@ dotenv.config();
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: { alias: { "@": path.resolve(__dirname, "./src") } },
+  define: {
+    'process.env': {} 
+  }
 })

@@ -2,7 +2,7 @@ import axiosInstance from "../lib/axios";
 
 export const apiClient = {
   get: <T>(endpoint: string, params?: Record<string, string | number>) =>
-    axiosInstance.get<T>(endpoint, { method: "GET", params }).then((res) => res.data),
+    axiosInstance.get<T>(endpoint, { method: "GET", params }),
   post: <T>(endpoint: string, body: unknown) =>
     axiosInstance.post<T>(endpoint, { method: "POST", body: JSON.stringify(body) }).then((res) => res.data),
   put: <T>(endpoint: string, body: unknown) =>
