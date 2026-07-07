@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import { BookOpen, LayoutGrid, type LucideIcon } from "lucide-react";
 import './App.css'
 import { cn } from './lib/utils';
+import { useBooks } from './features/books/hooks/use-books';
 
 type View = "books" | "categories";
 
@@ -15,11 +13,28 @@ const navItems: Array<{ key: View; label: string; icon: LucideIcon }> = [
 
 function App() {
   const [activeView, setActiveView] = useState<View>("books");
+  const [page, setPage] = useState<number>(
+    1
+  );
 
-  const counts: Record<View, number | undefined> = {
-    books: books?.length,
-    categories: categories?.length,
+  const [perPage, setSize] = useState<number>(
+    5
+  );
+
+  const apiParams = {
+    page,
+    perPage
   };
+
+  const books = useBooks(apiParams);
+  //const { data: categories } = useCategories();
+
+  // const counts: Record<View, number | undefined> = {
+  //   books: books?.length,
+  //   categories: 0,
+  // };
+
+  console.log(books)
 
   return (
     <>
@@ -41,9 +56,9 @@ function App() {
               >
                 <Icon className="h-4 w-4" />
                 {label}
-                {counts[key] !== undefined && (
+                {/* {counts[key] !== undefined && (
                   <span className="ml-auto text-xs opacity-70">{counts[key]}</span>
-                )}
+                )} */}
               </button>
             ))}
           </nav>
