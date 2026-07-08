@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useBooks, useDeleteBook } from '../hooks/use-books';
+import { useBooks, useCategoryOption, useDeleteBook } from '../hooks/use-books';
 import FilterGroup from '../../../components/filter/filter_group';
 import type { PaginationState } from '@tanstack/react-table';
 import type { GetPaginationParams } from '../../../types/params';
@@ -16,20 +16,21 @@ const BooksPage = () => {
         pageIndex: 0,
         pageSize: 5,
     });
-
-    const pageParams: GetPaginationParams = {
-        page: pagination.pageIndex + 1,
-        perPage: pagination.pageSize
-    }
-
-    const [activeTab, setActiveTab] = useState<'jadwal' | 'semua'>('jadwal');
-    const [selectedDay, setSelectedDay] = useState<string | null>(null);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<number | undefined>(undefined);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
+    const pageParams: GetPaginationParams = {
+        page: pagination.pageIndex + 1,
+        perPage: pagination.pageSize,
+        ...(selectedCategoryId && { category_id: selectedCategoryId }),
+    }
+
     const { data, isLoading, isError} = useBooks(pageParams);
+    const { data: categoryData } = useCategoryOption();
     const deleteMutation = useDeleteBook();
+
     const books = useMemo(() => data?.data ?? [], [data]);
     const meta = useMemo(() => data?.meta, [data]);
 
@@ -47,6 +48,15 @@ const BooksPage = () => {
         return -1;
     }, [meta, pagination.pageSize]);
 
+    const categories = useMemo(() => {
+        if (!categoryData?.data) return [];
+        
+        return categoryData.data?.map((cat: any) => ({
+            id: cat.id,
+            name: cat.name 
+        }));
+    }, [categoryData]);
+
     const openCreateForm = () => {
         setEditingBook(null);
         setFormOpen(true);
@@ -61,10 +71,9 @@ const BooksPage = () => {
         <div className="container mx-auto py-8">
             <div className='flex flex-col gap-y-5'>
                 <FilterGroup 
-                    activeTab={activeTab}
-                    setActiveTab={setActiveTab}
-                    selectedDay={selectedDay}
-                    onSelectDay={setSelectedDay}
+                    categories={categories}
+                    selectedCategoryId={selectedCategoryId}
+                    onSelectCategory={setSelectedCategoryId}
                     selectedTime={selectedTime}
                     onSelectTime={setSelectedTime}
                     searchQuery={searchQuery}

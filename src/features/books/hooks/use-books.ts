@@ -1,19 +1,30 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { bookApi, type CreateBookInput } from "../../../api/books";
 import type { GetDtlDataParams, GetPaginationParams } from "../../../types/params";
+import { categoriesAPI } from "../../../api/categories";
+import { useFetch } from "../../../lib/fetch";
+import type { PaginationDataResponse } from "../../../types/response";
  
 export const bookKeys = {
-    all: (page?: number, perPage?: number) => ["books",, page, perPage] as const,
+    all: (params?: GetPaginationParams) => ["books", params] as const,
+    categoriesOption: () => ["categories"],
     detail: (id: number) => ["books", id] as const
 };
+
+export function useCategoryOption() {
+    return useFetch(
+        bookKeys.categoriesOption(),
+        () => categoriesAPI.getOptionsCategories()
+    );
+}
 
 export function useBooks(
     params: GetPaginationParams
 ) {
-    return useQuery({
-        queryKey: bookKeys.all(params.page, params.perPage),
-        queryFn: () => bookApi.getAllData(params),
-    })
+    return useFetch<PaginationDataResponse<Book[]>>(
+        bookKeys.all(params),
+        () => bookApi.getAllData(params)
+    )
 }
 
 export function useGetDetailBook(

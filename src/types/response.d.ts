@@ -1,4 +1,4 @@
-export interface ApiSuccessResponse{
+export interface ApiSuccessResponse {
   success: boolean;
   code: number;
   message: string;
@@ -13,5 +13,5 @@ export interface Meta {
 
 interface PaginationDataResponse<T> extends ApiSuccessResponse {
   data: T;
-  meta: Meta;
+  meta?: Meta;
 }

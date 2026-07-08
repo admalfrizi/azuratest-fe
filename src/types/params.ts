@@ -4,6 +4,7 @@ import type { UpdateCategoriesInput } from "../api/categories";
 export type GetPaginationParams = {
     page: number;
     perPage: number;
+    category_id?: number;
 }
 
 export interface GetDtlDataParams {

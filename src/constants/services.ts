@@ -7,5 +7,6 @@ export const BOOK_URL = {
 
 export const CATEGORIES_URL = {
     LIST_CATEGORY: V1_URL + '/categories/',
+    OPTION_CATEGORY:  V1_URL + '/categories/option',
     DTL_CATEGORY: (id: number) => V1_URL + `/categories/${id}`
 }

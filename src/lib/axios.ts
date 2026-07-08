@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.response.use(
     (response) => {
-        return { ...response.data };
+        return response;
     },
     (error: AxiosError<{ message?: string }>) => {
         const message =

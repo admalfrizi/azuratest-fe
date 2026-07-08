@@ -1,8 +1,9 @@
 import React from 'react';
 
 export interface SearchRowProps {
-  selectedDay: string | null;
-  onSelectDay: (day: string | null) => void;
+  categories: Categories[];
+  selectedCategoryId: number | undefined;
+  onSelectCategory: (id: number | undefined) => void;
   selectedTime: string | null;
   onSelectTime: (time: string | null) => void;
   searchQuery: string;
@@ -10,7 +11,6 @@ export interface SearchRowProps {
   onSubmitSearch: () => void;
 }
 
-const DAY_OPTIONS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 const TIME_OPTIONS = [
   'Pagi (08:00 - 12:00)', 
   'Siang (12:00 - 15:00)', 
@@ -19,8 +19,9 @@ const TIME_OPTIONS = [
 ];
 
 export const SearchRow: React.FC<SearchRowProps> = ({
-  selectedDay,
-  onSelectDay,
+  categories,
+  selectedCategoryId,
+  onSelectCategory,
   selectedTime,
   onSelectTime,
   searchQuery,
@@ -40,13 +41,13 @@ export const SearchRow: React.FC<SearchRowProps> = ({
     >
       <div className="relative w-full md:w-1/4">
         <select
-          value={selectedDay || ''}
-          onChange={(e) => onSelectDay(e.target.value === '' ? null : e.target.value)}
+          value={selectedCategoryId || ''}
+          onChange={(e) => onSelectCategory(e.target.value === '' ? undefined : Number(e.target.value))}
           className="w-full appearance-none bg-white border border-gray-200 text-gray-700 py-2.5 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F2942] focus:border-transparent cursor-pointer text-sm font-medium transition-all"
         >
           <option value="">Kategori Buku</option>
-          {DAY_OPTIONS.map(day => (
-            <option key={day} value={day}>{day}</option>
+          {categories.map((data, idx) => (
+            <option key={idx} value={data.id}>{data.name}</option>
           ))}
         </select>
 
