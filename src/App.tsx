@@ -57,9 +57,6 @@ function App() {
               >
                 <Icon className="h-4 w-4" />
                 {label}
-                {counts[key] !== undefined && (
-                  <span className="ml-auto text-xs opacity-70">{counts[key]}</span>
-                )}
               </button>
             ))}
           </nav>

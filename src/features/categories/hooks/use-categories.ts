@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import type { GetPaginationParams } from "../../../types/params";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { GetDtlDataParams, GetPaginationParams } from "../../../types/params";
 import { categoriesAPI } from "../../../api/categories";
 
 export const categoryKeys = {
@@ -13,6 +13,17 @@ export function useCategories(
     return useQuery({
         queryKey: categoryKeys.all(params.page, params.perPage),
         queryFn: () => categoriesAPI.getAllData(params),
+        placeholderData: keepPreviousData,
+    })
+}
+
+export function useDeleteCategory(params: GetPaginationParams) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (params: GetDtlDataParams) => categoriesAPI.delete(params),
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: categoryKeys.all(params.page, params.perPage)})
+        }
     })
 }
 

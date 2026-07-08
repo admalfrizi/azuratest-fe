@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Card, CardContent } from "../../../components/ui/card";
-import { useBooks } from "../hooks/use-books";
+import { Button } from "../../../components/ui/button";
 
 interface ListContentParams {
     books: Book[]
@@ -17,17 +16,27 @@ export default function ListContent({books}: ListContentParams) {
                 {books?.map((data, idx) => (
                     <Card key={idx} className="w-full">
                         <CardContent>
-                            <div className="flex items-start md:items-center gap-4">
-                                <div className="w-20 h-20 rounded-full bg-gray-300 py-8 px-9">
-                                    S
+                            <div className="w-full flex justify-between items-center gap-4">
+                                <div className="flex flex-row gap-x-4">
+                                    <div className="w-20 h-20 rounded-full bg-gray-300 py-8 px-9">
+                                        S
+                                    </div>
+                                    <div className="flex flex-col items-start">
+                                        <h1>
+                                            {data.title}
+                                        </h1>
+                                        <p className="text-xl mt-2">
+                                            {data.author}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col items-start">
-                                    <h1>
-                                        {data.title}
-                                    </h1>
-                                    <p className="text-xl mt-2">
-                                        {data.author}
-                                    </p>
+                                <div className="flex flex-row gap-x-4">
+                                    <Button>
+                                        Edit Data
+                                    </Button>
+                                    <Button variant="destructive">
+                                        Hapus
+                                    </Button>
                                 </div>
                             </div>
                         </CardContent>
