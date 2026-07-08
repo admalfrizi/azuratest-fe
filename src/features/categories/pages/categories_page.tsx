@@ -5,8 +5,14 @@ import { useCategories, useDeleteCategory } from '../hooks/use-categories';
 import type { GetPaginationParams } from '../../../types/params';
 import { categoryColumns } from '../components/category-column';
 import { Button } from '../../../components/ui/button';
+import { ConfirmDialog } from '../../../components/alert-dialog/confirm-dialog';
+import { CategoryFormDialog } from '../components/category-form-dialog';
 
 const CategoriesPage = () => {
+    const [formOpen, setFormOpen] = useState(false);
+    const [editingCategory, setEditingCategory] = useState<Categories | null>(null);
+    const [deletingCategory, setDeletingCategory] = useState<Categories | null>(null);
+
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 5,
@@ -31,30 +37,55 @@ const CategoriesPage = () => {
 
     const columns = useMemo(
         () => categoryColumns({
-            onEdit: (category) => console.log("edit", category), // open your edit modal/route here
-            onDelete: (category) => {
-                if (confirm(`Hapus "${category.name}"?`)) deleteMutation.mutate({ id: category.id });
-            },
+            onEdit: (category) => openEditForm(category), // open your edit modal/route here
+            onDelete: (category) => setDeletingCategory(category),
         }),
         [deleteMutation]
     );
 
+    const openCreateForm = () => {
+        setEditingCategory(null);
+        setFormOpen(true);
+    };
+
+    const openEditForm = (category: Categories) => {
+        setEditingCategory(category);
+        setFormOpen(true);
+    };
+
     return (
-        <div className="container mx-auto py-8">'
-            <Button size="lg" className="mb-4">
-                Tambah Data
-            </Button>
-            <DataTable 
-                columns={columns} 
-                data={categoriesData as Categories[]}
-                isLoading={isLoading}
-                isError={isError}
-                manualPagination
-                pageCount={pageCount}
-                pagination={pagination}
-                onPaginationChange={setPagination}                
+        <>
+            <div className="container mx-auto py-8">'
+                <Button size="lg" className="mb-4" onClick={openCreateForm}>
+                    Tambah Data
+                </Button>
+                <DataTable 
+                    columns={columns} 
+                    data={categoriesData as Categories[]}
+                    isLoading={isLoading}
+                    isError={isError}
+                    manualPagination
+                    pageCount={pageCount}
+                    pagination={pagination}
+                    onPaginationChange={setPagination}                
+                />
+            </div>
+            <CategoryFormDialog open={formOpen} onOpenChange={setFormOpen} category={editingCategory} />
+            <ConfirmDialog
+                open={Boolean(deletingCategory)}
+                onOpenChange={(open) => !open && setDeletingCategory(null)}
+                title="Delete this category?"
+                description={`"${deletingCategory?.name}" will be permanently removed. Books using this category will need to be reassigned.`}
+                isPending={deleteMutation.isPending}
+                onConfirm={() => {
+                if (deletingCategory) {
+                    deleteMutation.mutate({ id: deletingCategory.id }, {
+                    onSuccess: () => setDeletingCategory(null),
+                    });
+                }
+                }}
             />
-        </div>
+        </>
     );
 };
 
