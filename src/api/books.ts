@@ -1,6 +1,7 @@
 import { BOOK_URL } from "../constants/services";
 import apiClient from "../lib/axios";
 import type { GetPaginationParams, GetDtlDataParams, UpdateBookParams } from "../types/params";
+import type { PaginationDataResponse } from "../types/response";
 
 export type CreateBookInput = {
   title: string;
@@ -14,7 +15,7 @@ export type CreateBookInput = {
 export type UpdateBookInput = Partial<CreateBookInput>;
 
 export const bookApi = {
-  getAllData: ( params: GetPaginationParams ) => apiClient.get<Book[]>(BOOK_URL.LIST_BOOKS, {
+  getAllData: ( params: GetPaginationParams ) => apiClient.get<PaginationDataResponse<Book[]>>(BOOK_URL.LIST_BOOKS, {
     params
   }),
   getById: (params: GetDtlDataParams) => apiClient.get<Book>(BOOK_URL.DTL_BOOKS(params.id)),
