@@ -6,6 +6,7 @@ import { useBooks } from './features/books/hooks/use-books';
 import BooksPage from './features/books/pages/books_page';
 import CategoriesPage from './features/categories/pages/categories_page';
 import { useCategories } from './features/categories/hooks/use-categories';
+import { Toaster } from 'sonner';
 
 type View = "books" | "categories";
 
@@ -65,6 +66,7 @@ function App() {
           {activeView === "books" ? <BooksPage /> : <CategoriesPage />}
         </main>
       </div>
+      <Toaster position="bottom-right" richColors closeButton/>
     </>
   )
 }

@@ -14,6 +14,7 @@ import { Button } from "../../../components/ui/button";
 import { useCreateCategory, useUpdateCategory } from "../hooks/use-categories";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../../../components/ui/field";
 import { categorySchema, type CategoryFormValues } from "../../../lib/validations";
+import { toast } from "sonner";
 
 interface CategoryFormDialogProps {
   open: boolean;
@@ -45,10 +46,22 @@ export function CategoryFormDialog({ open, onOpenChange, category }: CategoryFor
     if (isEditMode && category) {
       updateMutation.mutate(
         { id: category.id, form: values },
-        { onSuccess: () => onOpenChange(false) }
+        { 
+          onSuccess: () => {
+            toast.success("Category has been succesfully updated");
+            onOpenChange(false) 
+          }
+        }
       );
     } else {
-      createMutation.mutate(values, { onSuccess: () => onOpenChange(false) });
+      createMutation.mutate(
+        values, 
+        { 
+          onSuccess: () => {
+            toast.success("Category has been succesfully created");
+            onOpenChange(false)
+          }
+        });
     }
   };
 

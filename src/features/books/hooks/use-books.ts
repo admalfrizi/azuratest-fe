@@ -6,7 +6,8 @@ import { useFetch } from "../../../lib/fetch";
 import type { PaginationDataResponse } from "../../../types/response";
  
 export const bookKeys = {
-    all: (params?: GetPaginationParams) => ["books", params] as const,
+    all: () => ["books"] as const, 
+    list: (params?: GetPaginationParams) => [...bookKeys.all(), "list", params] as const,
     categoriesOption: () => ["categories"],
     detail: (id: number) => ["books", id] as const
 };
@@ -22,7 +23,7 @@ export function useBooks(
     params: GetPaginationParams
 ) {
     return useFetch<PaginationDataResponse<Book[]>>(
-        bookKeys.all(params),
+        bookKeys.list(params),
         () => bookApi.getAllData(params)
     )
 }
