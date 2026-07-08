@@ -33,8 +33,8 @@ function App() {
   const { data: categories } = useCategories(apiParams);
 
   const counts: Record<View, number | undefined> = {
-    books: books?.data.length,
-    categories: categories?.data.length,
+    books: 0,
+    categories: 0,
   };
 
   return (

@@ -3,7 +3,7 @@ import { Card, CardContent } from "../../../components/ui/card";
 import { useBooks } from "../hooks/use-books";
 
 interface ListContentParams {
-    books: Book[] | undefined
+    books: Book[]
 }
 
 export default function ListContent({books}: ListContentParams) {

@@ -4,7 +4,14 @@ export interface ApiSuccessResponse{
   message: string;
 }
 
+export interface Meta {
+  page : number, 
+  perPage : number, 
+  totalPages: number,
+  totalCount: number, 
+}
+
 interface PaginationDataResponse<T> extends ApiSuccessResponse {
   data: T;
-  meta: Record<string, unknown>;
+  meta: Meta;
 }

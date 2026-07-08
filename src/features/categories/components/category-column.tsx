@@ -6,11 +6,15 @@ import { DataTableColumnHeader } from "../../../components/data-table/data-table
 
 export const categorieskColumns: ColumnDef<Categories>[] = [
   {
+    accessorKey: "id",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="No" />,
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader column={column} title="Nama Kategori" />,
   },
   {
-    accessorKey: "number_of_pages",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Number of Page" />,
+    accessorKey: "action",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Action" />,
   }
 ]

@@ -1,7 +1,7 @@
 import type { UpdateBookInput } from "../api/books";
 import type { UpdateCategoriesInput } from "../api/categories";
 
-export interface GetPaginationParams {
+export type GetPaginationParams = {
     page: number;
     perPage: number;
 }
