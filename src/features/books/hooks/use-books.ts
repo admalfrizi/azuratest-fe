@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { bookApi } from "../../../api/books";
-import type { GetBooksParams } from "../../../types/params";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { bookApi, type CreateBookInput } from "../../../api/books";
+import type { GetDtlDataParams, GetPaginationParams } from "../../../types/params";
  
 export const bookKeys = {
     all: ["books"] as const,
@@ -8,7 +8,7 @@ export const bookKeys = {
 };
 
 export function useBooks(
-    params: GetBooksParams
+    params: GetPaginationParams
 ) {
     return useQuery({
         queryKey: bookKeys.all,
@@ -16,4 +16,21 @@ export function useBooks(
     })
 }
 
-export function use
+export function useGetDetailBook(
+    params: GetDtlDataParams
+) {
+    return useQuery({
+        queryKey: bookKeys.detail(params.id),
+        queryFn: () => bookApi.getById(params)
+    })
+}
+
+export function useCreateBook() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (data: CreateBookInput) => bookApi.create(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: bookKeys.all })
+        }
+    })
+}

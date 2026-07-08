@@ -5,6 +5,7 @@ import { cn } from './lib/utils';
 import { useBooks } from './features/books/hooks/use-books';
 import BooksPage from './features/books/pages/books_page';
 import CategoriesPage from './features/categories/pages/categories_page';
+import { useCategories } from './features/categories/hooks/use-categories';
 
 type View = "books" | "categories";
 
@@ -29,11 +30,11 @@ function App() {
   };
 
   const { data: books } = useBooks(apiParams);
-  //const { data: categories } = useCategories();
+  const { data: categories } = useCategories(apiParams);
 
   const counts: Record<View, number | undefined> = {
     books: books?.data.length,
-    categories: 0,
+    categories: categories?.data.length,
   };
 
   return (
