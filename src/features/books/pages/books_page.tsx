@@ -7,6 +7,7 @@ import { DataTable } from '../../../components/data-table/data-table';
 import { bookColumns } from '../components/book-column';
 import { ConfirmDialog } from '../../../components/alert-dialog/confirm-dialog';
 import { BookFormDialog } from '../components/book-form-dialog';
+import { useDebounce } from '../../../lib/utils';
 
 const BooksPage = () => {
     const [formOpen, setFormOpen] = useState(false);
@@ -20,11 +21,13 @@ const BooksPage = () => {
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const debouncedSearch = useDebounce(searchQuery, 500);
 
     const pageParams: GetPaginationParams = {
         page: pagination.pageIndex + 1,
         perPage: pagination.pageSize,
         ...(selectedCategoryId && { category_id: selectedCategoryId }),
+        ...(debouncedSearch && { search: debouncedSearch })
     }
 
     const { data, isLoading, isError} = useBooks(pageParams);
@@ -56,6 +59,8 @@ const BooksPage = () => {
             name: cat.name 
         }));
     }, [categoryData]);
+    
+    
 
     const openCreateForm = () => {
         setEditingBook(null);

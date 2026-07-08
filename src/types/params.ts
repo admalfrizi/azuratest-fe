@@ -5,6 +5,7 @@ export type GetPaginationParams = {
     page: number;
     perPage: number;
     category_id?: number;
+    search?: string;
 }
 
 export interface GetDtlDataParams {

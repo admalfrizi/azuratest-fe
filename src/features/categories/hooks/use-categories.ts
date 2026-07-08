@@ -1,6 +1,8 @@
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { GetDtlDataParams, GetPaginationParams, UpdateCategoriesParams } from "../../../types/params";
 import { categoriesAPI, type CreateCategoriesInput } from "../../../api/categories";
+import { useFetch } from "../../../lib/fetch";
+import type { PaginationDataResponse } from "../../../types/response";
 
 export const categoryKeys = {
   all: (page?: number, perPage?: number) => ["categories", page, perPage] as const,
@@ -10,11 +12,10 @@ export const categoryKeys = {
 export function useCategories(
     params: GetPaginationParams
 ) {
-    return useQuery({
-        queryKey: categoryKeys.all(params.page, params.perPage),
-        queryFn: () => categoriesAPI.getAllData(params),
-        placeholderData: keepPreviousData,
-    })
+    return useFetch<PaginationDataResponse<Categories[]>>(
+        categoryKeys.all(params.page, params.perPage),
+        () => categoriesAPI.getAllData(params)
+    )
 }
 
 export function useDeleteCategory(params: GetPaginationParams) {
