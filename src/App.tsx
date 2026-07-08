@@ -17,26 +17,6 @@ const navItems: Array<{ key: View; label: string; icon: LucideIcon }> = [
 
 function App() {
   const [activeView, setActiveView] = useState<View>("books");
-  const [page, setPage] = useState<number>(
-    1
-  );
-
-  const [perPage, setSize] = useState<number>(
-    5
-  );
-
-  const apiParams = {
-    page,
-    perPage
-  };
-
-  const { data: books } = useBooks(apiParams);
-  const { data: categories } = useCategories(apiParams);
-
-  const counts: Record<View, number | undefined> = {
-    books: 0,
-    categories: 0,
-  };
 
   return (
     <>
