@@ -5,6 +5,8 @@ import type { PaginationState } from '@tanstack/react-table';
 import type { GetPaginationParams } from '../../../types/params';
 import { DataTable } from '../../../components/data-table/data-table';
 import { bookColumns } from '../components/book-column';
+import { ConfirmDialog } from '../../../components/alert-dialog/confirm-dialog';
+import { BookFormDialog } from '../components/book-form-dialog';
 
 const BooksPage = () => {
     const [formOpen, setFormOpen] = useState(false);
@@ -69,6 +71,7 @@ const BooksPage = () => {
                     onSearchChange={setSearchQuery}
                     selectedDate={selectedDate}
                     onSelectDate={setSelectedDate}
+                    openCreateForm={openCreateForm}
                 />
                 <DataTable
                     columns={columns} 
@@ -81,7 +84,21 @@ const BooksPage = () => {
                     onPaginationChange={setPagination}              
                 />
             </div>
-            
+            <BookFormDialog open={formOpen} onOpenChange={setFormOpen} book={editingBook} />
+            <ConfirmDialog
+                open={Boolean(deletingBook)}
+                onOpenChange={(open) => !open && setDeletingBook(null)}
+                title="Delete this Book ?"
+                description={`"${deletingBook?.title}" book will be permanently removed. Are you sure to execute this one ?`}
+                isPending={deleteMutation.isPending}
+                onConfirm={() => {
+                    if (deletingBook) {
+                        deleteMutation.mutate({ id: deletingBook.id }, {
+                            onSuccess: () => setDeletingBook(null),
+                        });
+                    }
+                }}
+            />
         </div>
     );
 };

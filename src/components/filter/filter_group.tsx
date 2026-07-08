@@ -15,7 +15,7 @@ const FilterGroup = ({...props}) => {
                     onSearchChange={props.onSearchChange} 
                     onSubmitSearch={props.onSubmitSearch} 
                 />
-                <Button className="py-5">
+                <Button className="py-5" onClick={props.openCreateForm}>
                     Tambah Data
                 </Button>
             </div>
