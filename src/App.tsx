@@ -3,6 +3,8 @@ import { BookOpen, LayoutGrid, type LucideIcon } from "lucide-react";
 import './App.css'
 import { cn } from './lib/utils';
 import { useBooks } from './features/books/hooks/use-books';
+import BooksPage from './features/books/pages/books_page';
+import CategoriesPage from './features/categories/pages/categories_page';
 
 type View = "books" | "categories";
 
@@ -26,20 +28,18 @@ function App() {
     perPage
   };
 
-  const rgwgwe = useBooks(apiParams);
+  const { data: books } = useBooks(apiParams);
   //const { data: categories } = useCategories();
 
-  // const counts: Record<View, number | undefined> = {
-  //   books: books?.length,
-  //   categories: 0,
-  // };
-
-  console.log("books data : ", rgwgwe)
+  const counts: Record<View, number | undefined> = {
+    books: books?.data.length,
+    categories: 0,
+  };
 
   return (
     <>
       <div className="flex min-h-screen flex-col md:flex-row">
-        <aside className="w-full shrink-0 border-b bg-muted/30 p-4 md:w-56 md:border-b-0 md:border-r">
+        <aside className="w-full shrink-0 border-b bg-amber-400 p-4 md:w-56 md:border-b-0 md:border-r">
           <h1 className="mb-4 px-2 text-lg font-semibold md:mb-6">Library Admin</h1>
           <nav className="flex gap-1 md:block md:space-y-1">
             {navItems.map(({ key, label, icon: Icon }) => (
@@ -56,13 +56,16 @@ function App() {
               >
                 <Icon className="h-4 w-4" />
                 {label}
-                {/* {counts[key] !== undefined && (
+                {counts[key] !== undefined && (
                   <span className="ml-auto text-xs opacity-70">{counts[key]}</span>
-                )} */}
+                )}
               </button>
             ))}
           </nav>
         </aside>
+        <main className="flex-1 overflow-y-auto">
+          {activeView === "books" ? <BooksPage /> : <CategoriesPage />}
+        </main>
       </div>
     </>
   )
