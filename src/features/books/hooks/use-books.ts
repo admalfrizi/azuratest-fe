@@ -3,7 +3,7 @@ import { bookApi, type CreateBookInput } from "../../../api/books";
 import type { GetDtlDataParams, GetPaginationParams } from "../../../types/params";
  
 export const bookKeys = {
-    all: ["books"] as const,
+    all: (page?: number, perPage?: number) => ["books",, page, perPage] as const,
     detail: (id: number) => ["books", id] as const
 };
 
@@ -11,7 +11,7 @@ export function useBooks(
     params: GetPaginationParams
 ) {
     return useQuery({
-        queryKey: bookKeys.all,
+        queryKey: bookKeys.all(params.page, params.perPage),
         queryFn: () => bookApi.getAllData(params),
     })
 }
@@ -30,7 +30,17 @@ export function useCreateBook() {
     return useMutation({
         mutationFn: (data: CreateBookInput) => bookApi.create(data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: bookKeys.all })
+            queryClient.invalidateQueries({ queryKey: bookKeys.all() })
+        }
+    })
+}
+
+export function useDeleteBook() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (params: GetDtlDataParams) => bookApi.delete(params),
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: bookKeys.all()})
         }
     })
 }

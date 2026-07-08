@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import {
   Dialog,
   DialogContent,
@@ -14,12 +13,7 @@ import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import { useCreateCategory, useUpdateCategory } from "../hooks/use-categories";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../../../components/ui/field";
-
-const categorySchema = z.object({
-  name: z.string().min(1, "Name is required").max(100)
-});
-
-type CategoryFormValues = z.infer<typeof categorySchema>;
+import { categorySchema, type CategoryFormValues } from "../../../lib/validations";
 
 interface CategoryFormDialogProps {
   open: boolean;

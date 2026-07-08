@@ -16,7 +16,7 @@ const FilterGroup = ({...props}) => {
                     onSubmitSearch={props.onSubmitSearch} 
                 />
                 <Button className="py-5">
-                    Add New Data
+                    Tambah Data
                 </Button>
             </div>
             
