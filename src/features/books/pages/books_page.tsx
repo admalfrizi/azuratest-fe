@@ -98,7 +98,7 @@ const BooksPage = () => {
                     onPaginationChange={setPagination}              
                 />
             </div>
-            <BookFormDialog open={formOpen} onOpenChange={setFormOpen} book={editingBook} />
+            <BookFormDialog open={formOpen} onOpenChange={setFormOpen} book={editingBook} categories={categories} />
             <ConfirmDialog
                 open={Boolean(deletingBook)}
                 onOpenChange={(open) => !open && setDeletingBook(null)}

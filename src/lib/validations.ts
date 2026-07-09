@@ -5,15 +5,12 @@ export const categorySchema = z.object({
 });
 
 export const bookSchema = z.object({
-  title: z.string().min(1, "Title is required").max(255),
-  author: z.string().min(1, "Author is required").max(255),
-  isbn: z.string().min(10, "ISBN must be at least 10 characters").max(20),
-  publishedYear: z.coerce
-    .number()
-    .int()
-    .min(1000, "Enter a valid year")
-    .max(new Date().getFullYear(), "Year can't be in the future"),
-  categoryId: z.coerce.number().int().positive("Select a category"),
+  title: z.string().min(1, "Judul buku wajib diisi"),
+  author: z.string().min(1, "Penulis wajib diisi"),
+  publisher: z.string().min(1, "Penerbit wajib diisi"),
+  publication_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Format tanggal tidak valid"),
+  number_of_pages: z.number().int().positive("Jumlah halaman minimal 1"),
+  category_id: z.number().int().positive("Kategori wajib dipilih"),
 });
 
 export type CategoryFormValues = z.infer<typeof categorySchema>;

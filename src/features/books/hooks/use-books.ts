@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { bookApi, type CreateBookInput } from "../../../api/books";
-import type { GetDtlDataParams, GetPaginationParams } from "../../../types/params";
+import type { GetDtlDataParams, GetPaginationParams, UpdateBookParams } from "../../../types/params";
 import { categoriesAPI } from "../../../api/categories";
 import { useFetch } from "../../../lib/fetch";
 import type { PaginationDataResponse } from "../../../types/response";
@@ -41,6 +41,16 @@ export function useCreateBook() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (data: CreateBookInput) => bookApi.create(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: bookKeys.all() })
+        }
+    })
+}
+
+export function useUpdateBook() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (data: UpdateBookParams) => bookApi.update(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: bookKeys.all() })
         }

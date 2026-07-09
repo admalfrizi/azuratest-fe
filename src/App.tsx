@@ -2,10 +2,8 @@ import { useState } from 'react'
 import { BookOpen, LayoutGrid, type LucideIcon } from "lucide-react";
 import './App.css'
 import { cn } from './lib/utils';
-import { useBooks } from './features/books/hooks/use-books';
 import BooksPage from './features/books/pages/books_page';
 import CategoriesPage from './features/categories/pages/categories_page';
-import { useCategories } from './features/categories/hooks/use-categories';
 import { Toaster } from 'sonner';
 
 type View = "books" | "categories";
