@@ -37,10 +37,19 @@ export function BookFormInput({
                         id={name}
                         type={type}
                         min={min}
+                        value={field.value === undefined ? "" : field.value}
                         aria-invalid={fieldState.invalid}
                         placeholder={placeholder}
                         autoComplete="off"
                         disabled={isPending}
+                        onChange={(e) => {
+                            if (type === "number") {
+                                const value = e.target.value === "" ? "" : Number(e.target.value);
+                                field.onChange(value);
+                            } else {
+                                field.onChange(e.target.value);
+                            }
+                        }}
                     />
                     {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />

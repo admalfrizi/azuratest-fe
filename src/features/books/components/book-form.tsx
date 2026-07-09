@@ -112,7 +112,8 @@ export function BookForm({ book, isEditMode, categories, onSuccess, onCancel }: 
                         control={control}
                         name="number_of_pages" 
                         label={"Jumlah Halaman"} 
-                        isPending={isPending}                        
+                        isPending={isPending}  
+                        type="number"                      
                     />
                 </FieldGroup>
                 <DialogFooter>

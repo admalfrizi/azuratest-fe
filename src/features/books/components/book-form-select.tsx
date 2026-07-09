@@ -37,7 +37,7 @@ export function BookFormSelect({
                         id={name}
                         disabled={isPending}
                         aria-invalid={fieldState.invalid}
-                        value={field.value}
+                        value={field.value === undefined ? "" : field.value}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                         onBlur={field.onBlur}
                         name={field.name}
