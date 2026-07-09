@@ -15,7 +15,7 @@ const BooksPage = () => {
     const [deletingBook, setDeletingBook] = useState<Book | null>(null);
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
-        pageSize: 5,
+        pageSize: 10,
     });
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | undefined>(undefined);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -34,7 +34,24 @@ const BooksPage = () => {
     const { data: categoryData } = useCategoryOption();
     const deleteMutation = useDeleteBook();
 
-    const books = useMemo(() => data?.data ?? [], [data]);
+    const books = useMemo(() => {
+        if (!data?.data) return [];
+
+        return data.data.map((rawBook: any) => {
+            if (typeof rawBook.category === 'string' || rawBook.category_id) {
+                const { category_id, category, ...rest } = rawBook;
+                return {
+                    ...rest,
+                    category: {
+                        id: category_id,
+                        name: category
+                    }
+                };
+            }
+            
+            return rawBook;
+        });
+    }, [data]) as Book[];
     const meta = useMemo(() => data?.meta, [data]);
 
     const columns = useMemo(
@@ -59,8 +76,6 @@ const BooksPage = () => {
             name: cat.name 
         }));
     }, [categoryData]);
-    
-    
 
     const openCreateForm = () => {
         setEditingBook(null);

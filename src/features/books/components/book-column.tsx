@@ -24,7 +24,7 @@ export function bookColumns({ onEdit, onDelete }: BookColumnsOptions = {}): Colu
       header: ({ column }) => <DataTableColumnHeader column={column} title="Penulis Buku" />,
     },
     {
-      accessorKey: "category",
+      accessorKey: "category.name",
       header: ({ column }) => <DataTableColumnHeader column={column} title="Kategori" />,
     },
     {

@@ -34,7 +34,12 @@ export function BookForm({ book, isEditMode, categories, onSuccess, onCancel }: 
     } = useForm<BookFormValues>({
         resolver: zodResolver(bookSchema),
         defaultValues: {
-            title: "", author: "", publisher: "", publication_date: "", number_of_pages: 0, category_id: 0,
+            title: "", 
+            author: "", 
+            publisher: "", 
+            publication_date: "", 
+            number_of_pages: 0, 
+            category_id: isEditMode && book ? book.category.id : undefined,
         }
     });
 
@@ -46,7 +51,7 @@ export function BookForm({ book, isEditMode, categories, onSuccess, onCancel }: 
                 publisher: book.publisher,
                 publication_date: book.publication_date ? book.publication_date.split('T')[0] : "",
                 number_of_pages: book.number_of_pages,
-                category_id: book.category_id,
+                category_id: book.category.id,
             });
         } else {
             reset({
