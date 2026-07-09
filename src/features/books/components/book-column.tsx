@@ -12,8 +12,14 @@ interface BookColumnsOptions {
 export function bookColumns({ onEdit, onDelete }: BookColumnsOptions = {}): ColumnDef<Book>[] {
   return [
     {
-      accessorKey: "id",
+      id: "no",
       header: ({ column }) => <DataTableColumnHeader column={column} title="No" />,
+      cell: ({ row, table }) => {
+        const { pageIndex, pageSize } = table.getState().pagination
+        return pageIndex * pageSize + row.index + 1
+      },
+      enableSorting: false,
+      enableHiding: false,
     },
     {
       accessorKey: "title",

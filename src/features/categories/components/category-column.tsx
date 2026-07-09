@@ -12,8 +12,14 @@ interface CategoryColumnsOptions {
 export function categoryColumns({ onEdit, onDelete }: CategoryColumnsOptions = {}): ColumnDef<Categories>[] {
   return [
     {
-      accessorKey: "id",
+      id: "no",
       header: ({ column }) => <DataTableColumnHeader column={column} title="No" />,
+      cell: ({ row, table }) => {
+        const { pageIndex, pageSize } = table.getState().pagination
+        return pageIndex * pageSize + row.index + 1
+      },
+      enableSorting: false,
+      enableHiding: false,
     },
     {
       accessorKey: "name",
