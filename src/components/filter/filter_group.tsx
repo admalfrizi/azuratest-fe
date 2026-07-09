@@ -7,11 +7,12 @@ const FilterGroup = ({...props}) => {
         <Card className="w-full max-w-5xl bg-white rounded-xl p-6 flex flex-col gap-4">
             <div className="flex flex-row gap-x-6">
                 <SearchRow 
+                    publication_dates={props.publication_dates}
                     categories={props.categories}
                     selectedCategoryId={props.selectedCategoryId} 
                     onSelectCategory={props.onSelectCategory} 
-                    selectedTime={null} 
-                    onSelectTime={props.onSelectTime} 
+                    selectedDate={props.selectedDate} 
+                    onSelectDate={props.onSelectDate} 
                     searchQuery={props.searchQuery} 
                     onSearchChange={props.onSearchChange} 
                     onSubmitSearch={props.onSubmitSearch} 

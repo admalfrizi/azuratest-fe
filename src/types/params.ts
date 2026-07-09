@@ -6,10 +6,16 @@ export type GetPaginationParams = {
     perPage: number;
     category_id?: number;
     search?: string;
+    publication_date?: string;
 }
 
 export interface GetDtlDataParams {
     id: number
+}
+
+export interface GetPublicationDatesParams {
+    category_id?: number;
+    search?: string
 }
 
 export interface UpdateBookParams {

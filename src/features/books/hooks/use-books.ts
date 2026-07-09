@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { bookApi, type CreateBookInput } from "../../../api/books";
-import type { GetDtlDataParams, GetPaginationParams, UpdateBookParams } from "../../../types/params";
+import type { GetDtlDataParams, GetPaginationParams, GetPublicationDatesParams, UpdateBookParams } from "../../../types/params";
 import { categoriesAPI } from "../../../api/categories";
 import { useFetch } from "../../../lib/fetch";
 import type { PaginationDataResponse } from "../../../types/response";
@@ -8,6 +8,7 @@ import type { PaginationDataResponse } from "../../../types/response";
 export const bookKeys = {
     all: () => ["books"] as const, 
     list: (params?: GetPaginationParams) => [...bookKeys.all(), "list", params] as const,
+    publicationDates: (params?: GetPublicationDatesParams) => ["publication-dates", params],
     categoriesOption: () => ["categories"],
     detail: (id: number) => ["books", id] as const
 };
@@ -16,6 +17,13 @@ export function useCategoryOption() {
     return useFetch(
         bookKeys.categoriesOption(),
         () => categoriesAPI.getOptionsCategories()
+    );
+}
+
+export function useListPublicationDates(params?: GetPublicationDatesParams) {
+    return useFetch(
+        bookKeys.publicationDates(),
+        () => bookApi.getPublicationDates(params)
     );
 }
 

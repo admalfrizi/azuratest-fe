@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useBooks, useCategoryOption, useDeleteBook } from '../hooks/use-books';
+import { useBooks, useCategoryOption, useDeleteBook, useListPublicationDates } from '../hooks/use-books';
 import FilterGroup from '../../../components/filter/filter_group';
 import type { PaginationState } from '@tanstack/react-table';
 import type { GetPaginationParams } from '../../../types/params';
@@ -18,21 +18,27 @@ const BooksPage = () => {
         pageSize: 10,
     });
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | undefined>(undefined);
-    const [selectedTime, setSelectedTime] = useState<string | null>(null);
-    const [searchQuery, setSearchQuery] = useState<string>('');
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState<string>('');
     const debouncedSearch = useDebounce(searchQuery, 500);
 
     const pageParams: GetPaginationParams = {
         page: pagination.pageIndex + 1,
         perPage: pagination.pageSize,
         ...(selectedCategoryId && { category_id: selectedCategoryId }),
-        ...(debouncedSearch && { search: debouncedSearch })
+        ...(debouncedSearch && { search: debouncedSearch }),
+        ...(selectedDate && { publication_date: selectedDate })
     }
+
+    const dateParams = {
+        ...(selectedCategoryId && { category_id: selectedCategoryId }),
+        ...(debouncedSearch && { search: debouncedSearch })
+    };
 
     const { data, isLoading, isError} = useBooks(pageParams);
     const { data: categoryData } = useCategoryOption();
     const deleteMutation = useDeleteBook();
+    const { data: datesData } = useListPublicationDates(dateParams);
 
     const books = useMemo(() => {
         if (!data?.data) return [];
@@ -77,6 +83,11 @@ const BooksPage = () => {
         }));
     }, [categoryData]);
 
+    const publicationDates = useMemo(() => {
+        if (!datesData?.data) return [];
+        return datesData.data;
+    }, [datesData]);
+
     const openCreateForm = () => {
         setEditingBook(null);
         setFormOpen(true);
@@ -91,11 +102,10 @@ const BooksPage = () => {
         <div className="container mx-auto py-8">
             <div className='flex flex-col gap-y-5'>
                 <FilterGroup 
+                    publication_dates={publicationDates}
                     categories={categories}
                     selectedCategoryId={selectedCategoryId}
                     onSelectCategory={setSelectedCategoryId}
-                    selectedTime={selectedTime}
-                    onSelectTime={setSelectedTime}
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
                     selectedDate={selectedDate}

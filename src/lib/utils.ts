@@ -27,3 +27,16 @@ export function useDebounce<T>(value: T, delay: number): T {
 
   return debouncedValue;
 }
+
+export const formatReadableDate = (dateString: string) => {
+  try {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(date);
+  } catch (error) {
+    return dateString; 
+  }
+};

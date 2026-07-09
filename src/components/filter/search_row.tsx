@@ -1,29 +1,25 @@
 import React from 'react';
+import { formatReadableDate } from '../../lib/utils';
 
 export interface SearchRowProps {
   categories: Categories[];
+  publication_dates: string[];
   selectedCategoryId: number | undefined;
   onSelectCategory: (id: number | undefined) => void;
-  selectedTime: string | null;
-  onSelectTime: (time: string | null) => void;
+  selectedDate: string | null;
+  onSelectDate: (time: string | null) => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
   onSubmitSearch: () => void;
 }
 
-const TIME_OPTIONS = [
-  'Pagi (08:00 - 12:00)', 
-  'Siang (12:00 - 15:00)', 
-  'Sore (15:00 - 18:00)', 
-  'Malam (18:00 - 21:00)'
-];
-
 export const SearchRow: React.FC<SearchRowProps> = ({
   categories,
+  publication_dates,
   selectedCategoryId,
   onSelectCategory,
-  selectedTime,
-  onSelectTime,
+  selectedDate,
+  onSelectDate,
   searchQuery,
   onSearchChange,
   onSubmitSearch,
@@ -60,13 +56,13 @@ export const SearchRow: React.FC<SearchRowProps> = ({
 
       <div className="relative w-full md:w-1/4">
         <select
-          value={selectedTime || ''}
-          onChange={(e) => onSelectTime(e.target.value === '' ? null : e.target.value)}
+          value={selectedDate || ''}
+          onChange={(e) => onSelectDate(e.target.value === '' ? null : e.target.value)}
           className="w-full appearance-none bg-white border border-gray-200 text-gray-700 py-2.5 pl-4 pr-10 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0F2942] focus:border-transparent cursor-pointer text-sm font-medium transition-all"
         >
           <option value="">Tanggal Publikasi</option>
-          {TIME_OPTIONS.map(time => (
-            <option key={time} value={time}>{time}</option>
+          {publication_dates.map((time, idx) => (
+            <option key={idx} value={time}>{formatReadableDate(time)}</option>
           ))}
         </select>
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
