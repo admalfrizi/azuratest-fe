@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../../../components/ui/dialog";
 import { BookForm } from "./book-form";
 
@@ -15,8 +16,18 @@ interface BookFormDialogProps {
 
 export function BookFormDialog({open, onOpenChange, book, categories}: BookFormDialogProps) {
     const isEditMode = Boolean(book);
-    const handleSuccess = () => onOpenChange(false);
-    const handleCancel = () => onOpenChange(false);
+    const handleSuccess = () => { 
+        toast.success(`Data buku telah berhasil  ${isEditMode ? "disimpan" : "dibuat"} !`, {
+            closeButton: true
+        })
+        onOpenChange(false)
+    };
+    const handleCancel = () => { 
+        toast.error(`Ada kesalahan pada data buku anda !`, {
+            closeButton: true
+        })
+        onOpenChange(false) 
+    };
     
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
